@@ -141,6 +141,19 @@ define tp::install (
     $package_provider = $settings[package_provider]
   }
 
+  $package_install_options = $settings[package_install_options] ? {
+    Array[Variant[String, Hash]] => $settings[package_install_options],
+    ''                           => [],
+    undef                        => undef,
+    default                      => fail('package_install_options needs to be an array containing Strings and/or Hashes')
+  }
+
+  if $settings[package_install_options] == Variant[Undef,String[0]] {
+    $package_provider = undef
+  } else {
+    $package_provider = $settings[package_provider]
+  }
+
   $package_ensure = $ensure ? {
     'absent' => 'absent',
     false    => 'absent',
@@ -178,15 +191,17 @@ define tp::install (
   if $settings[package_name] =~ Array {
     $settings[package_name].each |$pkg| {
       package { $pkg:
-        ensure   => $package_ensure,
-        provider => $package_provider,
+        ensure          => $package_ensure,
+        provider        => $package_provider,
+        install_options => $package_install_options,
       }
     }
   }
   if $settings[package_name] =~ String[1] {
     package { $settings[package_name]:
-      ensure   => $ensure,
-      provider => $package_provider,
+      ensure          => $ensure,
+      provider        => $package_provider,
+      install_options => $package_install_options,
       # tag      => $app,
     }
   }
