@@ -148,12 +148,6 @@ define tp::install (
     default                      => fail('package_install_options needs to be an array containing Strings and/or Hashes')
   }
 
-  if $settings[package_install_options] == Variant[Undef,String[0]] {
-    $package_install_options = undef
-  } else {
-    $package_install_options = $settings[package_install_options]
-  }
-
   $package_ensure = $ensure ? {
     'absent' => 'absent',
     false    => 'absent',
