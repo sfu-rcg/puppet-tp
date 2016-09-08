@@ -149,9 +149,9 @@ define tp::install (
   }
 
   if $settings[package_install_options] == Variant[Undef,String[0]] {
-    $package_provider = undef
+    $package_install_options = undef
   } else {
-    $package_provider = $settings[package_provider]
+    $package_install_options = $settings[package_install_options]
   }
 
   $package_ensure = $ensure ? {
