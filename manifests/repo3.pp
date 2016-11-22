@@ -84,7 +84,6 @@ define tp::repo3 (
     # To avoid to introduce another dependency we manage apt repos directly
     'Debian': {
       if !defined(Exec['tp_apt_update'])
-      and is_string($settings[package_name])
       and $settings[package_name] != ''
       and $settings[package_name] != undef
       and is_string($settings[key]) {
